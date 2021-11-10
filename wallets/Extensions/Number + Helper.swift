@@ -29,30 +29,6 @@ extension Int {
 
 }
 
-extension Float {
-
-    var int: Int {
-        return Int(self)
-    }
-
-    var double: Double {
-        return Double(self)
-    }
-
-    var cgFloat: CGFloat {
-        return CGFloat(self)
-    }
-
-    var string: String {
-        return String(describing: self)
-    }
-    
-    var formattedDecimal: String {
-        let number = NSNumber(value: self)
-        return number.formattedDecimal
-    }
-}
-
 extension Double {
     var float: Float {
         return Float(self)
@@ -74,31 +50,6 @@ extension Double {
         let number = NSNumber(value: self)
         return number.formattedDecimal
     }
-}
-
-extension CGFloat {
-
-    var int: Int {
-        return Int(self)
-    }
-
-    var double: Double {
-        return Double(self)
-    }
-
-    var float: Float {
-        return Float(self)
-    }
-
-    var string: String {
-        return String(describing: self)
-    }
-    
-    var formattedDecimal: String {
-        let number = NSNumber(value: self)
-        return number.formattedDecimal
-    }
-    
 }
 
 extension NSNumber {

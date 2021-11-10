@@ -9,10 +9,14 @@ import Foundation
 import Alamofire
 import Combine
 
-protocol WalletsDataProviderProtocol {
+protocol DataProviderProtocol {
+    func enableErrors(_ isEnabled: Bool)
+}
+
+protocol WalletsDataProviderProtocol: DataProviderProtocol {
     func walletsPublisher() -> AnyPublisher<WalletsResponse, AFError>
 }
 
-protocol HistoryDataProviderProtocol {
+protocol HistoryDataProviderProtocol: DataProviderProtocol {
     func historyPublisher(page: Int) -> AnyPublisher<HistoryResponse, AFError>
 }

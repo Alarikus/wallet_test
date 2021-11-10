@@ -5,7 +5,6 @@
 //  Created by Bogdan Redkin on 09.11.2021.
 //
 
-//TODO: - Customize Alamofire request handling
 import Foundation
 import Alamofire
 import Combine
@@ -38,10 +37,10 @@ extension APIRequest {
         return components
     }
     
-    func request(with host: String) -> Alamofire.DataRequest {
-        return AF.request(host + components.path,
+    func request(with host: String, enabledErrors: Bool = false) -> Alamofire.DataRequest {
+        return AF.request(host + components.path + (enabledErrors ? ["/429", "/500"].randomElement()! : ""),
                           method: .get,
-                          parameters: components.parameters,
+                          parameters: enabledErrors ? nil : components.parameters,
                           headers: components.headers)
     }
     

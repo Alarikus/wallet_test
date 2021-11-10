@@ -8,7 +8,11 @@
 import Foundation
 import Alamofire
 
-enum DefinedError: Error {
+enum DefinedError: Equatable, Error {
+    static func == (lhs: DefinedError, rhs: DefinedError) -> Bool {
+        return lhs.message == rhs.message
+    }
+    
     case pageNotFound
     case requestThrottled(BackendError)
     case internalServerError
@@ -38,6 +42,10 @@ enum DefinedError: Error {
     
     init(error: AFError) {
         self = .afError(error)
+    }
+    
+    init(from error: AFError) {
+        self = (error.underlyingError as? DefinedError) ?? .unknown
     }
 
     var message: String {

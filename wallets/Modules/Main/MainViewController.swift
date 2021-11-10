@@ -39,10 +39,17 @@ final class MainViewController: UITableViewController {
         viewModel.send(event: .onLoadView)
     }
         
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.send(event: .onAppear)
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
     private func setUpTableView() {
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableCellViewModel.cellIdentifier)
-        tableView.isPrefetchingEnabled = true
-        tableView.prefetchDataSource = self
         tableView.contentInsetAdjustmentBehavior = .always
         tableView.alwaysBounceVertical = true
         
@@ -79,39 +86,50 @@ final class MainViewController: UITableViewController {
             viewModel.$state.sink { [weak self] state in
                 guard let self = self else { return }
                 
-                switch state {
-                case .loaded(let wallets, let history, let page):
-
-                    var snapshot = self.dataSource.snapshot()
-                    
-                    self.footerActivityIndicator.stopAnimating()
-                    self.backgroundActivityIndicator.stopAnimating()
-                    
-                    guard let wallets = wallets, let history = history, let page = page else {
-                        self.dataSource.applySnapshotUsingReloadData(snapshot) {
-                            self.refreshControl?.endRefreshing()
+                DispatchQueue.main.asyncAfter(deadline: .now() +
+                                              (self.viewModel.isRequestWithDelayEnabled ? 5.0 : 0)) {
+                    switch state {
+                    case .loaded(let wallets, let history, let page, _):
+                        var snapshot = self.dataSource.snapshot()
+                        
+                        self.footerActivityIndicator.stopAnimating()
+                        self.backgroundActivityIndicator.stopAnimating()
+                        
+                        guard let page = page else { return }
+                        
+                        if page == 1 {
+                            snapshot = Snapshot()
+                            if let wallets = wallets {
+                                snapshot.appendSections([.wallets])
+                                snapshot.appendItems(wallets.map({ MainViewModel.Row.wallet($0) }), toSection: .wallets)
+                            }
+                            
+                            if let history = history {
+                                snapshot.appendSections([.history])
+                                snapshot.appendItems(history.map({ MainViewModel.Row.history($0) }), toSection: .history)
+                            }
+                            
+                            self.dataSource.applySnapshotUsingReloadData(snapshot) {
+                                self.refreshControl?.endRefreshing()
+                            }
+                        } else if let history = history {
+                            snapshot.appendItems(history.map({ MainViewModel.Row.history($0) }), toSection: .history)
+                            self.dataSource.apply(snapshot, animatingDifferences: true)
                         }
-                        return
+                    default:
+                        self.footerActivityIndicator.stopAnimating()
+                        self.refreshControl?.endRefreshing()
                     }
-                    
-                    if page == 1 {
-                        snapshot = Snapshot()
-                        snapshot.appendSections([.wallets, .history])
-                        snapshot.appendItems(wallets.map({ MainViewModel.Row.wallet($0) }), toSection: .wallets)
-                        snapshot.appendItems(history.map({ MainViewModel.Row.history($0) }), toSection: .history)
-                        self.dataSource.applySnapshotUsingReloadData(snapshot) {
-                            self.refreshControl?.endRefreshing()
-                        }
-                    } else {
-                        snapshot.appendItems(history.map({ MainViewModel.Row.history($0) }), toSection: .history)
-                        self.dataSource.apply(snapshot, animatingDifferences: true)
-                    }
-                case .error:
-                    self.footerActivityIndicator.stopAnimating()
-                default:
-                    break
                 }
             }.store(in: &bindings)
+            
+            viewModel.$isPaginationAvailable
+                .receive(on: DispatchQueue.main)
+                .sink { isPaginationAvailable in
+                    if !isPaginationAvailable {
+                        self.footerActivityIndicator.removeFromSuperview()
+                    }
+                }.store(in: &bindings)
         }
         
         func bindModelToView() {
@@ -129,7 +147,7 @@ final class MainViewController: UITableViewController {
     
 }
 
-extension MainViewController: UITableViewDataSourcePrefetching {
+extension MainViewController {
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard
@@ -143,18 +161,25 @@ extension MainViewController: UITableViewDataSourcePrefetching {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-    
-    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        let historiesCount = dataSource.snapshot().numberOfItems(inSection: .history)
         
-        if indexPaths.contains(where: {
-            $0.row > historiesCount - 2 && $0.section == 1
-        }) {
-            viewModel.send(event: .onLoadNextPage(page: Int(historiesCount/20)))
-            self.footerActivityIndicator.startAnimating()
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard
+            self.dataSource.snapshot().sectionIdentifiers.contains(.history),
+                viewModel.isPaginationAvailable
+        else { return }
+
+        let historiesCount = dataSource.snapshot().numberOfItems(inSection: .history)
+
+        if scrollView == tableView {
+            if (scrollView.contentOffset.y +
+                scrollView.frame.size.height) >= scrollView.contentSize.height {
+
+                viewModel.send(event: .onLoadNextPage(page: Int(historiesCount/20)))
+                footerActivityIndicator.startAnimating()
+            }
         }
     }
-    
+        
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let items = self.dataSource.snapshot().itemIdentifiers(inSection: .history)
         guard indexPath.section == 1,
@@ -171,7 +196,7 @@ extension MainViewController: UITableViewDataSourcePrefetching {
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard section == 1 else { return nil }
+        guard section == 1, viewModel.isPaginationAvailable else { return nil }
         let footerView = UIView(frame: .zero)
         footerView.backgroundColor = .clear
         
@@ -186,7 +211,7 @@ extension MainViewController: UITableViewDataSourcePrefetching {
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard section == 1 else { return super.tableView(tableView, heightForFooterInSection: section) }
         
-        return 70
+        return viewModel.isPaginationAvailable ? 70 : 0
     }
     
 }

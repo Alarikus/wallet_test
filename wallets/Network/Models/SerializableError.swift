@@ -10,7 +10,7 @@ import Alamofire
 
 final class TwoDecodableResponseSerializer<T: Decodable>: ResponseSerializer {
     
-    lazy var decoder: JSONDecoder = {
+    private lazy var decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         return decoder
@@ -47,7 +47,12 @@ final class TwoDecodableResponseSerializer<T: Decodable>: ResponseSerializer {
             if type(of: error) == DefinedError.self {
                 throw error
             } else {
-                throw DefinedError(error: AFError.responseSerializationFailed(reason: .customSerializationFailed(error: error)))
+                let statusCodeError = DefinedError(code: response.statusCode)
+                if statusCodeError == DefinedError.unknown {
+                    throw DefinedError(error: AFError.responseSerializationFailed(reason: .customSerializationFailed(error: error)))
+                } else {
+                    throw statusCodeError
+                }
             }
         }
     }

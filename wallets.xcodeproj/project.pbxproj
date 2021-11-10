@@ -19,6 +19,8 @@
 		C38AF42A273BEFE600B5B0F3 /* SerializableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF429273BEFE600B5B0F3 /* SerializableError.swift */; };
 		C3924477273A956A0094BE69 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C3924476273A956A0094BE69 /* Alamofire */; };
 		C3924479273A9F080094BE69 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3924478273A9F080094BE69 /* MainViewModel.swift */; };
+		C3C929DA273C42BD00C4B003 /* AlamofireNetworkActivityLogger in Frameworks */ = {isa = PBXBuildFile; productRef = C3C929D9273C42BD00C4B003 /* AlamofireNetworkActivityLogger */; };
+		C3C929DD273C58F600C4B003 /* MockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C929DC273C58F600C4B003 /* MockDataProvider.swift */; };
 		C3CA4140273AA0AA00C00FAD /* HistoryDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA413F273AA0AA00C00FAD /* HistoryDetailViewModel.swift */; };
 		C3CA4142273AA0BB00C00FAD /* HistoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA4141273AA0BB00C00FAD /* HistoryDetailViewController.swift */; };
 		C3CA4147273AA64700C00FAD /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA4146273AA64700C00FAD /* ApplicationCoordinator.swift */; };
@@ -64,6 +66,7 @@
 		C38AF425273BDA3700B5B0F3 /* RemoteDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataProvider.swift; sourceTree = "<group>"; };
 		C38AF429273BEFE600B5B0F3 /* SerializableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializableError.swift; sourceTree = "<group>"; };
 		C3924478273A9F080094BE69 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		C3C929DC273C58F600C4B003 /* MockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataProvider.swift; sourceTree = "<group>"; };
 		C3CA413F273AA0AA00C00FAD /* HistoryDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailViewModel.swift; sourceTree = "<group>"; };
 		C3CA4141273AA0BB00C00FAD /* HistoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailViewController.swift; sourceTree = "<group>"; };
 		C3CA4146273AA64700C00FAD /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
@@ -88,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3C929DA273C42BD00C4B003 /* AlamofireNetworkActivityLogger in Frameworks */,
 				C3924477273A956A0094BE69 /* Alamofire in Frameworks */,
 				C3CA4161273AE89300C00FAD /* Cartography in Frameworks */,
 			);
@@ -126,10 +130,9 @@
 			children = (
 				C334E26D273A85EB007ADC22 /* AppDelegate.swift */,
 				C334E26F273A85EB007ADC22 /* SceneDelegate.swift */,
-				C334E2AC273A8F80007ADC22 /* API */,
+				C334E2AC273A8F80007ADC22 /* Network */,
 				C334E2A6273A8DD8007ADC22 /* Extensions */,
 				C3CA4156273ABA5C00C00FAD /* Feedback */,
-				C334E2A3273A89C9007ADC22 /* UIKit */,
 				C3CA4144273AA58700C00FAD /* Coordinator */,
 				C334E2A7273A8DFC007ADC22 /* Modules */,
 				C334E2AB273A8ECE007ADC22 /* Supporting Files */,
@@ -141,15 +144,9 @@
 			isa = PBXGroup;
 			children = (
 				C334E284273A85EC007ADC22 /* walletsTests.swift */,
+				C3C929DB273C58B300C4B003 /* NetworkMock */,
 			);
 			path = walletsTests;
-			sourceTree = "<group>";
-		};
-		C334E2A3273A89C9007ADC22 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UIKit;
 			sourceTree = "<group>";
 		};
 		C334E2A6273A8DD8007ADC22 /* Extensions */ = {
@@ -199,7 +196,7 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C334E2AC273A8F80007ADC22 /* API */ = {
+		C334E2AC273A8F80007ADC22 /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				C3CA4151273AA9C200C00FAD /* Models */,
@@ -207,7 +204,15 @@
 				C38AF423273BDA1F00B5B0F3 /* DataProvidingProtocols.swift */,
 				C38AF425273BDA3700B5B0F3 /* RemoteDataProvider.swift */,
 			);
-			path = API;
+			path = Network;
+			sourceTree = "<group>";
+		};
+		C3C929DB273C58B300C4B003 /* NetworkMock */ = {
+			isa = PBXGroup;
+			children = (
+				C3C929DC273C58F600C4B003 /* MockDataProvider.swift */,
+			);
+			path = NetworkMock;
 			sourceTree = "<group>";
 		};
 		C3CA4144273AA58700C00FAD /* Coordinator */ = {
@@ -280,6 +285,7 @@
 			packageProductDependencies = (
 				C3924476273A956A0094BE69 /* Alamofire */,
 				C3CA4160273AE89300C00FAD /* Cartography */,
+				C3C929D9273C42BD00C4B003 /* AlamofireNetworkActivityLogger */,
 			);
 			productName = wallets;
 			productReference = C334E26A273A85EB007ADC22 /* wallets.app */;
@@ -334,6 +340,7 @@
 			packageReferences = (
 				C3924475273A956A0094BE69 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				C3CA415F273AE89300C00FAD /* XCRemoteSwiftPackageReference "Cartography" */,
+				C3C929D8273C42BD00C4B003 /* XCRemoteSwiftPackageReference "AlamofireNetworkActivityLogger" */,
 			);
 			productRefGroup = C334E26B273A85EB007ADC22 /* Products */;
 			projectDirPath = "";
@@ -422,6 +429,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3C929DD273C58F600C4B003 /* MockDataProvider.swift in Sources */,
 				C334E285273A85EC007ADC22 /* walletsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -578,8 +586,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -590,7 +598,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -608,8 +616,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -620,7 +628,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -715,6 +723,14 @@
 				minimumVersion = 5.4.4;
 			};
 		};
+		C3C929D8273C42BD00C4B003 /* XCRemoteSwiftPackageReference "AlamofireNetworkActivityLogger" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/konkab/AlamofireNetworkActivityLogger.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		C3CA415F273AE89300C00FAD /* XCRemoteSwiftPackageReference "Cartography" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/robb/Cartography.git";
@@ -730,6 +746,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C3924475273A956A0094BE69 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		C3C929D9273C42BD00C4B003 /* AlamofireNetworkActivityLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C3C929D8273C42BD00C4B003 /* XCRemoteSwiftPackageReference "AlamofireNetworkActivityLogger" */;
+			productName = AlamofireNetworkActivityLogger;
 		};
 		C3CA4160273AE89300C00FAD /* Cartography */ = {
 			isa = XCSwiftPackageProductDependency;

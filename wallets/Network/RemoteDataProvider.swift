@@ -14,6 +14,9 @@ final class RemoteDataProvider: WalletsDataProviderProtocol, HistoryDataProvider
     private
     let host = "http://www.amock.io/api/aldammit/"
     
+    private
+    var isErrorsEnabled = false
+            
     func historyPublisher(page: Int) -> AnyPublisher<HistoryResponse, AFError> {
         return APIRequest.history(page: page)
             .request(with: host)
@@ -23,8 +26,12 @@ final class RemoteDataProvider: WalletsDataProviderProtocol, HistoryDataProvider
     
     func walletsPublisher() -> AnyPublisher<WalletsResponse, AFError> {
         return APIRequest.wallets
-            .request(with: host)
+            .request(with: host, enabledErrors: isErrorsEnabled)
             .publishTwoDecodable(type: WalletsResponse.self)
             .value()
+    }
+    
+    func enableErrors(_ isEnabled: Bool) {
+        self.isErrorsEnabled = isEnabled
     }
 }

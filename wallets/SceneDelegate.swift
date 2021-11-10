@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AlamofireNetworkActivityLogger
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -18,6 +19,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         self.window = window
+        
+        #if DEBUG
+            NetworkActivityLogger.shared.level = .debug
+            NetworkActivityLogger.shared.startLogging()
+        #endif
         
         let appCoordinator = ApplicationCoordinator(window: window)
         appCoordinator.start()

@@ -22,7 +22,6 @@ final class UIControlSubscription<SubscriberType: Subscriber,
 
     func request(_ demand: Subscribers.Demand) {
         // We do nothing here as we only want to send events when they occur.
-        // See, for more info: https://developer.apple.com/documentation/combine/subscribers/demand
     }
 
     func cancel() {

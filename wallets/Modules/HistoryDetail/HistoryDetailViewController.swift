@@ -27,9 +27,13 @@ class HistoryDetailViewController: UIViewController {
         setUpUI()
     }
     
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
     private func setUpUI() {
         self.title = "History Details"
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor.systemBackground
         view.addSubview(stackView)
         view.addSubview(backButton)
         
@@ -62,6 +66,8 @@ class HistoryDetailViewController: UIViewController {
         stackView.addArrangedSubview(detailsHeader)
         
         backButton.configuration = UIButton.Configuration.borderedTinted()
+        backButton.tintColor = .label
+        backButton.setTitleColor(.label, for: .normal)
         backButton.setTitle("Back", for: .normal)
     }
     
