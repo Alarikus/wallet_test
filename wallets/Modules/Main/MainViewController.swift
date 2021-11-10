@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import Combine
+import Cartography
 
 final class MainViewController: UITableViewController {
     
@@ -24,7 +25,8 @@ final class MainViewController: UITableViewController {
     private var bindings = Set<AnyCancellable>()
     private var dataSource: DataSource!
     
-    private lazy var footerActivityIndicator = UIActivityIndicatorView()
+    private lazy var footerActivityIndicator = UIActivityIndicatorView(style: .large)
+    private lazy var backgroundActivityIndicator = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,13 +38,17 @@ final class MainViewController: UITableViewController {
 
         viewModel.send(event: .onLoadView)
     }
-    
+        
     private func setUpTableView() {
         tableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableCellViewModel.cellIdentifier)
         tableView.isPrefetchingEnabled = true
         tableView.prefetchDataSource = self
         tableView.contentInsetAdjustmentBehavior = .always
         tableView.alwaysBounceVertical = true
+        
+        backgroundActivityIndicator.startAnimating()
+        backgroundActivityIndicator.hidesWhenStopped = true
+        tableView.backgroundView = backgroundActivityIndicator
         
         footerActivityIndicator.hidesWhenStopped = true
         
@@ -75,7 +81,19 @@ final class MainViewController: UITableViewController {
                 
                 switch state {
                 case .loaded(let wallets, let history, let page):
+
                     var snapshot = self.dataSource.snapshot()
+                    
+                    self.footerActivityIndicator.stopAnimating()
+                    self.backgroundActivityIndicator.stopAnimating()
+                    
+                    guard let wallets = wallets, let history = history, let page = page else {
+                        self.dataSource.applySnapshotUsingReloadData(snapshot) {
+                            self.refreshControl?.endRefreshing()
+                        }
+                        return
+                    }
+                    
                     if page == 1 {
                         snapshot = Snapshot()
                         snapshot.appendSections([.wallets, .history])
@@ -88,9 +106,7 @@ final class MainViewController: UITableViewController {
                         snapshot.appendItems(history.map({ MainViewModel.Row.history($0) }), toSection: .history)
                         self.dataSource.apply(snapshot, animatingDifferences: true)
                     }
-                    self.footerActivityIndicator.stopAnimating()
-                case .error(let error):
-                    print(error)
+                case .error:
                     self.footerActivityIndicator.stopAnimating()
                 default:
                     break
@@ -129,10 +145,12 @@ extension MainViewController: UITableViewDataSourcePrefetching {
     }
     
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        let historiesCount = dataSource.snapshot().numberOfItems(inSection: .history)
+        
         if indexPaths.contains(where: {
-            $0.row > dataSource.snapshot().numberOfItems(inSection: .history) - 2 && $0.section == 1
+            $0.row > historiesCount - 2 && $0.section == 1
         }) {
-            viewModel.send(event: .onLoadNextPage())
+            viewModel.send(event: .onLoadNextPage(page: Int(historiesCount/20)))
             self.footerActivityIndicator.startAnimating()
         }
     }
@@ -154,8 +172,21 @@ extension MainViewController: UITableViewDataSourcePrefetching {
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section == 1 else { return nil }
-        footerActivityIndicator.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50)
-        return footerActivityIndicator
+        let footerView = UIView(frame: .zero)
+        footerView.backgroundColor = .clear
+        
+        footerView.addSubview(footerActivityIndicator)
+        constrain(footerActivityIndicator, footerView) { activityIndicator, root in
+            activityIndicator.center == root.center
+        }
+        
+        return footerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section == 1 else { return super.tableView(tableView, heightForFooterInSection: section) }
+        
+        return 70
     }
     
 }

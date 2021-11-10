@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Alamofire
 
 final class MainViewModel {
     @Published private(set) var state: State = State.idle
@@ -36,17 +37,6 @@ final class MainViewModel {
     }
     
     func send(event: Event) {
-        switch event {
-        case .onLoadNextPage:
-            switch state {
-            case .loading(let page), .loaded(_, _, let page):
-                input.send(.onLoadNextPage(page: page + 1))
-                return
-            default: break
-            }
-        default: break
-        }
-        
         input.send(event)
     }
     
@@ -67,17 +57,18 @@ extension MainViewModel {
     enum State {
         case idle
         case loading(page: Int)
-        case loaded(wallets: [Wallet], history: [History], page: Int)
-        case error(Error)
+        case loaded(wallets: [Wallet]? = nil, history: [History]? = nil, page: Int? = nil)
+        case error(DefinedError)
         case transition(History)
     }
     
     enum Event {
         case onLoadView
+        case onAppear
         case onReload
         case onLoaded([Wallet], [History], Int)
-        case onLoadNextPage(page: Int = 1)
-        case onFailedToLoadData(Error)
+        case onLoadNextPage(page: Int)
+        case onFailedToLoadData(AFError)
         case onSelectHistory(History)
     }
     
@@ -86,40 +77,44 @@ extension MainViewModel {
 // MARK: - State Machine
 extension MainViewModel {
     static func reduce(_ state: State, _ event: Event) -> State {
-        switch state {
-        case .idle:
-            switch event {
-            case .onLoadView, .onReload:
-                return .loading(page: 1)
-            default: break
+        var isLoadingAvailable: Bool {
+            switch state {
+            case .loading, .error, .transition: return false
+            default: return true
             }
-        case .loading:
-            switch event {
-            case .onFailedToLoadData(let error):
-                return .error(error)
-            case .onLoaded(let wallets, let history, let page):
-                return .loaded(wallets: wallets, history: history, page: page)
-            default: break
-            }
-        case .loaded:
-            switch event {
-            case .onLoadNextPage(let page):
-                return .loading(page: page)
-            case .onReload:
-                return .loading(page: 1)
-            case .onSelectHistory(let selectedHistory):
-                return .transition(selectedHistory)
-            default: break
-            }
-        case .error:
-            switch event {
-            case .onReload:
-                return .loading(page: 1)
-            default: break
-            }
-        case .transition: break
         }
-        return state
+        
+        var isTransitionAvailable: Bool {
+            switch state {
+            case .transition: return false
+            default: return true
+            }
+        }
+        
+        switch event {
+        case .onLoadView, .onReload:
+            return isLoadingAvailable ? .loading(page: 1) : .loaded()
+            
+        case .onAppear:
+            return .loaded()
+            
+        case .onLoaded(let wallets, let histories, let page):
+            return .loaded(wallets: wallets, history: histories, page: page)
+            
+        case .onLoadNextPage(let page):
+            return isLoadingAvailable ? .loading(page: page + 1) : .loaded()
+            
+        case .onFailedToLoadData(let error):
+            
+            if let myError = error.underlyingError as? DefinedError {
+                print("myError: \(myError)")
+                return .error(myError)
+            }
+            
+            return .error(.unknown)
+        case .onSelectHistory(let selectedHistory):
+            return isTransitionAvailable ? .transition(selectedHistory) : .loaded()
+        }
     }
     
     static func whenLoading(walletsDataProvider: WalletsDataProviderProtocol,

@@ -10,28 +10,6 @@ import Foundation
 import Alamofire
 import Combine
 
-protocol WalletsDataProviderProtocol {
-    func walletsPublisher() -> AnyPublisher<WalletsResponse, AFError>
-}
-
-protocol HistoryDataProviderProtocol {
-    func historyPublisher(page: Int) -> AnyPublisher<HistoryResponse, AFError>
-}
-
-final class RemoteDataProvider: WalletsDataProviderProtocol, HistoryDataProviderProtocol {
-    
-    private
-    let host = "http://www.amock.io/api/aldammit/"
-    
-    func historyPublisher(page: Int) -> AnyPublisher<HistoryResponse, AFError> {
-        return APIRequest.history(page: page).request(with: host).publishDecodable(type: HistoryResponse.self).value()
-    }
-    
-    func walletsPublisher() -> AnyPublisher<WalletsResponse, AFError> {
-        return APIRequest.wallets.request(with: host).publishDecodable(type: WalletsResponse.self).value()
-    }
-}
-
 enum APIRequest {
     case wallets
     case history(page: Int)

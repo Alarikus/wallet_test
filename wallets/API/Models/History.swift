@@ -14,9 +14,7 @@ struct History: Hashable, Codable {
     let amount: Double
     let currency: String
     let partner: String
-
-    //TODO: Implement Date formatter
-    let date: String
+    let date: Date
     
     enum Entry: String, Codable {
         case incoming

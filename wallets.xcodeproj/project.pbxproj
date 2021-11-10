@@ -13,6 +13,10 @@
 		C334E277273A85EC007ADC22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C334E276273A85EC007ADC22 /* Assets.xcassets */; };
 		C334E27A273A85EC007ADC22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C334E278273A85EC007ADC22 /* LaunchScreen.storyboard */; };
 		C334E285273A85EC007ADC22 /* walletsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334E284273A85EC007ADC22 /* walletsTests.swift */; };
+		C38AF422273BD1D900B5B0F3 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF421273BD1D900B5B0F3 /* Errors.swift */; };
+		C38AF424273BDA1F00B5B0F3 /* DataProvidingProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF423273BDA1F00B5B0F3 /* DataProvidingProtocols.swift */; };
+		C38AF426273BDA3700B5B0F3 /* RemoteDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF425273BDA3700B5B0F3 /* RemoteDataProvider.swift */; };
+		C38AF42A273BEFE600B5B0F3 /* SerializableError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF429273BEFE600B5B0F3 /* SerializableError.swift */; };
 		C3924477273A956A0094BE69 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C3924476273A956A0094BE69 /* Alamofire */; };
 		C3924479273A9F080094BE69 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3924478273A9F080094BE69 /* MainViewModel.swift */; };
 		C3CA4140273AA0AA00C00FAD /* HistoryDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA413F273AA0AA00C00FAD /* HistoryDetailViewModel.swift */; };
@@ -55,6 +59,10 @@
 		C334E27B273A85EC007ADC22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C334E280273A85EC007ADC22 /* walletsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = walletsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C334E284273A85EC007ADC22 /* walletsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletsTests.swift; sourceTree = "<group>"; };
+		C38AF421273BD1D900B5B0F3 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		C38AF423273BDA1F00B5B0F3 /* DataProvidingProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvidingProtocols.swift; sourceTree = "<group>"; };
+		C38AF425273BDA3700B5B0F3 /* RemoteDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataProvider.swift; sourceTree = "<group>"; };
+		C38AF429273BEFE600B5B0F3 /* SerializableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializableError.swift; sourceTree = "<group>"; };
 		C3924478273A9F080094BE69 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		C3CA413F273AA0AA00C00FAD /* HistoryDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailViewModel.swift; sourceTree = "<group>"; };
 		C3CA4141273AA0BB00C00FAD /* HistoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailViewController.swift; sourceTree = "<group>"; };
@@ -196,6 +204,8 @@
 			children = (
 				C3CA4151273AA9C200C00FAD /* Models */,
 				C3CA415B273ABBD700C00FAD /* WalletsAPI.swift */,
+				C38AF423273BDA1F00B5B0F3 /* DataProvidingProtocols.swift */,
+				C38AF425273BDA3700B5B0F3 /* RemoteDataProvider.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -226,6 +236,8 @@
 			children = (
 				C3CA4152273AA9E100C00FAD /* History.swift */,
 				C3CA4154273AAA0500C00FAD /* Wallet.swift */,
+				C38AF421273BD1D900B5B0F3 /* Errors.swift */,
+				C38AF429273BEFE600B5B0F3 /* SerializableError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -390,12 +402,16 @@
 				C3CA415E273ABF0C00C00FAD /* Number + Helper.swift in Sources */,
 				C3CA4153273AA9E100C00FAD /* History.swift in Sources */,
 				C3CA4164273B2D3C00C00FAD /* MainTableViewCell.swift in Sources */,
+				C38AF426273BDA3700B5B0F3 /* RemoteDataProvider.swift in Sources */,
 				C3CA4142273AA0BB00C00FAD /* HistoryDetailViewController.swift in Sources */,
 				C3CA416A273B6A1F00C00FAD /* HistoryDetailCoordinator.swift in Sources */,
 				C3CA4168273B554900C00FAD /* UIControl+Combine.swift in Sources */,
 				C334E270273A85EB007ADC22 /* SceneDelegate.swift in Sources */,
 				C3924479273A9F080094BE69 /* MainViewModel.swift in Sources */,
+				C38AF42A273BEFE600B5B0F3 /* SerializableError.swift in Sources */,
 				C3CA414B273AA73B00C00FAD /* MainCoordinator.swift in Sources */,
+				C38AF424273BDA1F00B5B0F3 /* DataProvidingProtocols.swift in Sources */,
+				C38AF422273BD1D900B5B0F3 /* Errors.swift in Sources */,
 				C3CA4158273ABA6B00C00FAD /* Feedback.swift in Sources */,
 				C3CA415A273ABAAE00C00FAD /* Publishers + system.swift in Sources */,
 				C3CA4147273AA64700C00FAD /* ApplicationCoordinator.swift in Sources */,

@@ -25,7 +25,7 @@ final class MainCoordinator: Coordinator {
         let mainViewController = MainViewController(style: .insetGrouped)
         mainViewController.viewModel = viewModelProvider.mainViewModel()
         mainViewController.extendedLayoutIncludesOpaqueBars = true
-
+        
         mainViewController.viewModel.$state
             .receive(on: DispatchQueue.main)
             .sink { selectedState in
@@ -35,6 +35,8 @@ final class MainCoordinator: Coordinator {
                                                                             viewModelProvider: self.viewModelProvider,
                                                                             selectedHistory: history)
                     historyDetailCoordinator.start()
+                case .error(let error):
+                    self.showAlert(title: "Error", message: error.message)
                 default:
                     break
                 }

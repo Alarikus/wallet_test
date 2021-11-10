@@ -29,14 +29,14 @@ final class HistoryDetailViewModel {
             details = [
                 "Sender:": selectedHistory.partner,
                 "Amount:": selectedHistory.amount.formattedDecimal + " " + selectedHistory.currency,
-                "Date:": selectedHistory.date
+                "Date:": selectedHistory.date.formatted()
             ]
         case .outgoing:
             title = "You've cashed out to " + selectedHistory.partner
             details = [
                 "Recipient:": selectedHistory.partner,
                 "Amount:": "-\(selectedHistory.amount.formattedDecimal) \(selectedHistory.currency)",
-                "Date:": selectedHistory.date
+                "Date:": selectedHistory.date.formatted()
             ]
         }
     }

@@ -9,7 +9,8 @@ import UIKit
 import Combine
 
 /// A custom subscription to capture UIControl target events.
-final class UIControlSubscription<SubscriberType: Subscriber, Control: UIControl>: Subscription where SubscriberType.Input == Control {
+final class UIControlSubscription<SubscriberType: Subscriber,
+                                    Control: UIControl>: Subscription where SubscriberType.Input == Control {
     private var subscriber: SubscriberType?
     private let control: Control
 
@@ -46,7 +47,9 @@ struct UIControlPublisher<Control: UIControl>: Publisher {
         self.controlEvents = events
     }
 
-    func receive<S>(subscriber: S) where S: Subscriber, S.Failure == UIControlPublisher.Failure, S.Input == UIControlPublisher.Output {
+    func receive<S>(subscriber: S) where S: Subscriber,
+                                            S.Failure == UIControlPublisher.Failure,
+                                            S.Input == UIControlPublisher.Output {
         let subscription = UIControlSubscription(subscriber: subscriber, control: control, event: controlEvents)
         subscriber.receive(subscription: subscription)
     }
