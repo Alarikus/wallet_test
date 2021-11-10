@@ -10,7 +10,7 @@ import Combine
 import Alamofire
 @testable import wallets
 
-struct MockDataProvider: WalletsDataProviderProtocol, HistoryDataProviderProtocol {
+final class MockDataProvider: WalletsDataProviderProtocol, HistoryDataProviderProtocol {
     
     let walletsResponse: WalletsResponse
     let historyResponse: HistoryResponse
@@ -34,7 +34,7 @@ struct MockDataProvider: WalletsDataProviderProtocol, HistoryDataProviderProtoco
         let publisher = PassthroughSubject<T, AFError>()
         
         DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-            if let error = error {
+            if let error = self.error {
                 publisher.send(completion: .failure(error))
             } else {
                 publisher.send(data)

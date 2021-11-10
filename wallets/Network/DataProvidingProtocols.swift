@@ -10,7 +10,7 @@ import Alamofire
 import Combine
 
 protocol DataProviderProtocol {
-    func enableErrors(_ isEnabled: Bool)
+    func enableErrors(types: [MainViewModel.Section])
 }
 
 protocol WalletsDataProviderProtocol: DataProviderProtocol {

@@ -9,8 +9,8 @@ import Foundation
 
 protocol ViewModelProvider {
     
-    func mainViewModel() -> MainViewModel
-    
+    func mainViewModel(coordinator: MainCoordinator) -> MainViewModel
+
     func historyViewModel(selectedHistory: History) -> HistoryDetailViewModel
     
     func mainCellViewModel(history: History) -> MainTableCellViewModel

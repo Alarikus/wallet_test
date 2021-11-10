@@ -15,20 +15,27 @@ final class MainViewModel {
     private var bindings = Set<AnyCancellable>()
     
     private let input = PassthroughSubject<Event, Never>()
-        
-    var viewModelProvider: ViewModelProvider
+    
+    var coordinator: MainCoordinator
+    let viewModelProvider: ViewModelProvider
     
     @Published var isPaginationAvailable = false
-    var isRequestsWithErrorsEnabled = true
-    var isRequestWithDelayEnabled = false
+    @Published var requestsWithErrors: [Section] = []
+    var isRequestsWithDelayEnabled = false
     
     let dataProvider: WalletsDataProviderProtocol & HistoryDataProviderProtocol
     
     init(_ dataProvider: WalletsDataProviderProtocol & HistoryDataProviderProtocol,
-         viewModelProvider: ViewModelProvider) {
+         viewModelProvider: ViewModelProvider,
+         coordinator: MainCoordinator) {
         self.viewModelProvider = viewModelProvider
         self.dataProvider = dataProvider
+        self.coordinator = coordinator
         
+        setupBindings()
+    }
+    
+    func setupBindings() {
         Publishers.system(
             initial: state,
             reduce: Self.reduce,
@@ -37,25 +44,38 @@ final class MainViewModel {
                 Self.whenLoading(walletsDataProvider: dataProvider,
                                  historyDataProvider: dataProvider),
                 Self.userInput(input: input.eraseToAnyPublisher())
-            ]
-        )
-        .assign(to: \.state, on: self)
-        .store(in: &bindings)
-    
+            ])
+            .assign(to: \.state, on: self)
+            .store(in: &bindings)
+        
         $state.receive(on: DispatchQueue.main)
-            .sink { state in
+            .sink { [weak self] state in
+                guard let self = self else { return }
+                
                 switch state {
-//                case .loading(let page):
-//                    if page == 1 {
-//                        self.isPaginationAvailable = true
-//                    }
+                case .transition(let history):
+                    self.coordinator.openHistoryDetail(history: history)
+                    
+                case .loaded(_, let history, let page, _):
+                    if let history = history, !history.isEmpty, page == 1 {
+                        self.isPaginationAvailable = true
+                    }
+                    
                 case .error(let error):
                     if error == .pageNotFound {
                         self.isPaginationAvailable = false
+                    } else {
+                        self.coordinator.showAlert(title: "Error", message: error.message)
                     }
                 default:
                     break
                 }
+            }.store(in: &bindings)
+        
+        $requestsWithErrors.receive(on: RunLoop.main)
+            .sink { [weak self] selectedRequests in
+                guard let self = self else { return }
+                self.dataProvider.enableErrors(types: selectedRequests)
             }.store(in: &bindings)
     }
     
@@ -72,7 +92,7 @@ extension MainViewModel {
         case history = "History"
     }
     
-    enum Row: Hashable {        
+    enum Row: Hashable {
         case wallet(Wallet)
         case history(History)
     }
@@ -125,13 +145,13 @@ extension MainViewModel {
             switch (wallets, histories) {
             case (.success(let wallets), .success(let histories)):
                 return .loaded(wallets, histories, page: page)
-            
+                
             case (.success(let wallets), .failure(let error)):
                 return .loaded(wallets, nil, page: page, DefinedError(from: error))
                 
             case (.failure(let error), .success(let history)):
                 return .loaded(nil, history, page: page, DefinedError(from: error))
-            
+                
             case (.failure(let error), .failure):
                 
                 return .error(DefinedError(from: error))
@@ -159,7 +179,7 @@ extension MainViewModel {
             let historyPublisher = historyDataProvider.historyPublisher(page: page)
                 .map { Result<[History], AFError>.success($0.data) }
                 .catch { Just(Result<[History], AFError>.failure($0)) }
-
+            
             let walletsPublisher =  walletsDataProvider.walletsPublisher()
                 .map { Result<[Wallet], AFError>.success($0.wallets) }
                 .catch { Just(Result<[Wallet], AFError>.failure($0)) }
@@ -173,7 +193,7 @@ extension MainViewModel {
             return combinedPublisher
         }
     }
-        
+    
     static func userInput(input: AnyPublisher<Event, Never>) -> Feedback<State, Event> {
         Feedback { _ in input }
     }

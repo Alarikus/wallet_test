@@ -13,8 +13,8 @@ final class MainViewModelProvider: ViewModelProvider {
         return HistoryDetailViewModel(selectedHistory)
     }
     
-    func mainViewModel() -> MainViewModel {
-        return MainViewModel(RemoteDataProvider(), viewModelProvider: self)
+    func mainViewModel(coordinator: MainCoordinator) -> MainViewModel {
+        return MainViewModel(RemoteDataProvider(), viewModelProvider: self, coordinator: coordinator)
     }
     
     func mainCellViewModel(wallet: Wallet) -> MainTableCellViewModel {

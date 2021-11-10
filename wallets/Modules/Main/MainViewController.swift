@@ -87,35 +87,10 @@ final class MainViewController: UITableViewController {
                 guard let self = self else { return }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() +
-                                              (self.viewModel.isRequestWithDelayEnabled ? 5.0 : 0)) {
+                                              (self.viewModel.isRequestsWithDelayEnabled ? 5.0 : 0)) {
                     switch state {
-                    case .loaded(let wallets, let history, let page, _):
-                        var snapshot = self.dataSource.snapshot()
-                        
-                        self.footerActivityIndicator.stopAnimating()
-                        self.backgroundActivityIndicator.stopAnimating()
-                        
-                        guard let page = page else { return }
-                        
-                        if page == 1 {
-                            snapshot = Snapshot()
-                            if let wallets = wallets {
-                                snapshot.appendSections([.wallets])
-                                snapshot.appendItems(wallets.map({ MainViewModel.Row.wallet($0) }), toSection: .wallets)
-                            }
-                            
-                            if let history = history {
-                                snapshot.appendSections([.history])
-                                snapshot.appendItems(history.map({ MainViewModel.Row.history($0) }), toSection: .history)
-                            }
-                            
-                            self.dataSource.applySnapshotUsingReloadData(snapshot) {
-                                self.refreshControl?.endRefreshing()
-                            }
-                        } else if let history = history {
-                            snapshot.appendItems(history.map({ MainViewModel.Row.history($0) }), toSection: .history)
-                            self.dataSource.apply(snapshot, animatingDifferences: true)
-                        }
+                    case .loaded(let wallets, let history, let page, let err):
+                        self.processLoadedData(wallets, history, page: page, err)
                     default:
                         self.footerActivityIndicator.stopAnimating()
                         self.refreshControl?.endRefreshing()
@@ -143,6 +118,35 @@ final class MainViewController: UITableViewController {
         
         bindModelToView()
         bindViewToViewModel()
+    }
+        
+    private func processLoadedData(_ wallets: [Wallet]?, _ histories: [History]?, page: Int?, _ error: DefinedError?) {
+        var snapshot = self.dataSource.snapshot()
+        
+        self.footerActivityIndicator.stopAnimating()
+        self.backgroundActivityIndicator.stopAnimating()
+        
+        guard let page = page else { return }
+        
+        if page == 1 {
+            snapshot = Snapshot()
+            if let wallets = wallets {
+                snapshot.appendSections([.wallets])
+                snapshot.appendItems(wallets.map({ MainViewModel.Row.wallet($0) }), toSection: .wallets)
+            }
+            
+            if let history = histories {
+                snapshot.appendSections([.history])
+                snapshot.appendItems(history.map({ MainViewModel.Row.history($0) }), toSection: .history)
+            }
+            
+            self.dataSource.applySnapshotUsingReloadData(snapshot) {
+                self.refreshControl?.endRefreshing()
+            }
+        } else if let histories = histories {
+            snapshot.appendItems(histories.map({ MainViewModel.Row.history($0) }), toSection: .history)
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+        }
     }
     
 }
