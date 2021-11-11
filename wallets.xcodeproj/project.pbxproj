@@ -12,7 +12,6 @@
 		C334E272273A85EB007ADC22 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334E271273A85EB007ADC22 /* MainViewController.swift */; };
 		C334E277273A85EC007ADC22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C334E276273A85EC007ADC22 /* Assets.xcassets */; };
 		C334E27A273A85EC007ADC22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C334E278273A85EC007ADC22 /* LaunchScreen.storyboard */; };
-		C334E285273A85EC007ADC22 /* walletsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C334E284273A85EC007ADC22 /* walletsTests.swift */; };
 		C38AF422273BD1D900B5B0F3 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF421273BD1D900B5B0F3 /* Errors.swift */; };
 		C38AF424273BDA1F00B5B0F3 /* DataProvidingProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF423273BDA1F00B5B0F3 /* DataProvidingProtocols.swift */; };
 		C38AF426273BDA3700B5B0F3 /* RemoteDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF425273BDA3700B5B0F3 /* RemoteDataProvider.swift */; };
@@ -20,7 +19,6 @@
 		C3924477273A956A0094BE69 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C3924476273A956A0094BE69 /* Alamofire */; };
 		C3924479273A9F080094BE69 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3924478273A9F080094BE69 /* MainViewModel.swift */; };
 		C3C929DA273C42BD00C4B003 /* AlamofireNetworkActivityLogger in Frameworks */ = {isa = PBXBuildFile; productRef = C3C929D9273C42BD00C4B003 /* AlamofireNetworkActivityLogger */; };
-		C3C929DD273C58F600C4B003 /* MockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C929DC273C58F600C4B003 /* MockDataProvider.swift */; };
 		C3CA4140273AA0AA00C00FAD /* HistoryDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA413F273AA0AA00C00FAD /* HistoryDetailViewModel.swift */; };
 		C3CA4142273AA0BB00C00FAD /* HistoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA4141273AA0BB00C00FAD /* HistoryDetailViewController.swift */; };
 		C3CA4147273AA64700C00FAD /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA4146273AA64700C00FAD /* ApplicationCoordinator.swift */; };
@@ -41,16 +39,6 @@
 		C3CA416A273B6A1F00C00FAD /* HistoryDetailCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA4169273B6A1F00C00FAD /* HistoryDetailCoordinator.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		C334E281273A85EC007ADC22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C334E262273A85EB007ADC22 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C334E269273A85EB007ADC22;
-			remoteInfo = wallets;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		C334E26A273A85EB007ADC22 /* wallets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wallets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C334E26D273A85EB007ADC22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -59,14 +47,11 @@
 		C334E276273A85EC007ADC22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C334E279273A85EC007ADC22 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C334E27B273A85EC007ADC22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C334E280273A85EC007ADC22 /* walletsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = walletsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C334E284273A85EC007ADC22 /* walletsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletsTests.swift; sourceTree = "<group>"; };
 		C38AF421273BD1D900B5B0F3 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		C38AF423273BDA1F00B5B0F3 /* DataProvidingProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvidingProtocols.swift; sourceTree = "<group>"; };
 		C38AF425273BDA3700B5B0F3 /* RemoteDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataProvider.swift; sourceTree = "<group>"; };
 		C38AF429273BEFE600B5B0F3 /* SerializableError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializableError.swift; sourceTree = "<group>"; };
 		C3924478273A9F080094BE69 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
-		C3C929DC273C58F600C4B003 /* MockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataProvider.swift; sourceTree = "<group>"; };
 		C3CA413F273AA0AA00C00FAD /* HistoryDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailViewModel.swift; sourceTree = "<group>"; };
 		C3CA4141273AA0BB00C00FAD /* HistoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailViewController.swift; sourceTree = "<group>"; };
 		C3CA4146273AA64700C00FAD /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
@@ -97,13 +82,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C334E27D273A85EC007ADC22 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -111,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				C334E26C273A85EB007ADC22 /* wallets */,
-				C334E283273A85EC007ADC22 /* walletsTests */,
 				C334E26B273A85EB007ADC22 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,7 +97,6 @@
 			isa = PBXGroup;
 			children = (
 				C334E26A273A85EB007ADC22 /* wallets.app */,
-				C334E280273A85EC007ADC22 /* walletsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,15 +114,6 @@
 				C334E2AB273A8ECE007ADC22 /* Supporting Files */,
 			);
 			path = wallets;
-			sourceTree = "<group>";
-		};
-		C334E283273A85EC007ADC22 /* walletsTests */ = {
-			isa = PBXGroup;
-			children = (
-				C334E284273A85EC007ADC22 /* walletsTests.swift */,
-				C3C929DB273C58B300C4B003 /* NetworkMock */,
-			);
-			path = walletsTests;
 			sourceTree = "<group>";
 		};
 		C334E2A6273A8DD8007ADC22 /* Extensions */ = {
@@ -205,14 +172,6 @@
 				C38AF425273BDA3700B5B0F3 /* RemoteDataProvider.swift */,
 			);
 			path = Network;
-			sourceTree = "<group>";
-		};
-		C3C929DB273C58B300C4B003 /* NetworkMock */ = {
-			isa = PBXGroup;
-			children = (
-				C3C929DC273C58F600C4B003 /* MockDataProvider.swift */,
-			);
-			path = NetworkMock;
 			sourceTree = "<group>";
 		};
 		C3CA4144273AA58700C00FAD /* Coordinator */ = {
@@ -291,24 +250,6 @@
 			productReference = C334E26A273A85EB007ADC22 /* wallets.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C334E27F273A85EC007ADC22 /* walletsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C334E297273A85EC007ADC22 /* Build configuration list for PBXNativeTarget "walletsTests" */;
-			buildPhases = (
-				C334E27C273A85EC007ADC22 /* Sources */,
-				C334E27D273A85EC007ADC22 /* Frameworks */,
-				C334E27E273A85EC007ADC22 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C334E282273A85EC007ADC22 /* PBXTargetDependency */,
-			);
-			name = walletsTests;
-			productName = walletsTests;
-			productReference = C334E280273A85EC007ADC22 /* walletsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -321,10 +262,6 @@
 				TargetAttributes = {
 					C334E269273A85EB007ADC22 = {
 						CreatedOnToolsVersion = 13.1;
-					};
-					C334E27F273A85EC007ADC22 = {
-						CreatedOnToolsVersion = 13.1;
-						TestTargetID = C334E269273A85EB007ADC22;
 					};
 				};
 			};
@@ -347,7 +284,6 @@
 			projectRoot = "";
 			targets = (
 				C334E269273A85EB007ADC22 /* wallets */,
-				C334E27F273A85EC007ADC22 /* walletsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -359,13 +295,6 @@
 			files = (
 				C334E27A273A85EC007ADC22 /* LaunchScreen.storyboard in Resources */,
 				C334E277273A85EC007ADC22 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C334E27E273A85EC007ADC22 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,24 +354,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C334E27C273A85EC007ADC22 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C3C929DD273C58F600C4B003 /* MockDataProvider.swift in Sources */,
-				C334E285273A85EC007ADC22 /* walletsTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C334E282273A85EC007ADC22 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C334E269273A85EB007ADC22 /* wallets */;
-			targetProxy = C334E281273A85EC007ADC22 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C334E278273A85EC007ADC22 /* LaunchScreen.storyboard */ = {
@@ -632,56 +544,6 @@
 			};
 			name = Release;
 		};
-		C334E298273A85EC007ADC22 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JTVJ6L7R86;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = one.redkin.walletsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wallets.app/wallets";
-			};
-			name = Debug;
-		};
-		C334E299273A85EC007ADC22 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = JTVJ6L7R86;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = one.redkin.walletsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wallets.app/wallets";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -699,15 +561,6 @@
 			buildConfigurations = (
 				C334E295273A85EC007ADC22 /* Debug */,
 				C334E296273A85EC007ADC22 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C334E297273A85EC007ADC22 /* Build configuration list for PBXNativeTarget "walletsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C334E298273A85EC007ADC22 /* Debug */,
-				C334E299273A85EC007ADC22 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

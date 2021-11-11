@@ -69,7 +69,7 @@ final class MainCoordinator: Coordinator {
     
     @objc private
     func errorsButtonPressed(item: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Enabling errors for request", message: "Choose request type", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Enabling errors in response", message: "Choose response type", preferredStyle: .actionSheet)
         
         alert.addAction(UIAlertAction(title: "All", style: .default, handler: { _ in
             self.mainViewController.viewModel.requestsWithErrors = [.history, .wallets]
@@ -86,13 +86,18 @@ final class MainCoordinator: Coordinator {
             alert.dismiss(animated: true, completion: nil)
         }))
         
+        alert.addAction(UIAlertAction(title: "Nothing", style: .default, handler: { _ in
+            self.mainViewController.viewModel.requestsWithErrors = []
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        
         alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: { _ in
             alert.dismiss(animated: true, completion: nil)
         }))
                 
         navigationController.present(alert, animated: true)
         
-        if !mainViewController.viewModel.requestsWithErrors.isEmpty {
+        if (mainViewController.viewModel.requestsWithErrors ?? []).isEmpty == false {
             item.tintColor = .systemRed
 //            self.showAlert(title: "Errors", message: "Enabled responses with error codes 429 and 500.")
         } else {

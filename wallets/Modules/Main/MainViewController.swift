@@ -16,6 +16,7 @@ final class MainViewController: UITableViewController {
         override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             return self.snapshot().sectionIdentifiers[section].rawValue
         }
+
     }
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<MainViewModel.Section, MainViewModel.Row>
@@ -28,6 +29,8 @@ final class MainViewController: UITableViewController {
     private lazy var footerActivityIndicator = UIActivityIndicatorView(style: .large)
     private lazy var backgroundActivityIndicator = UIActivityIndicatorView(style: .large)
     
+    private var isLoading = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         refreshControl = UIRefreshControl()
@@ -37,15 +40,6 @@ final class MainViewController: UITableViewController {
         setUpBindings()
 
         viewModel.send(event: .onLoadView)
-    }
-        
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.send(event: .onAppear)
-    }
-    
-    override var shouldAutorotate: Bool {
-        return false
     }
     
     private func setUpTableView() {
@@ -91,9 +85,19 @@ final class MainViewController: UITableViewController {
                     switch state {
                     case .loaded(let wallets, let history, let page, let err):
                         self.processLoadedData(wallets, history, page: page, err)
-                    default:
+                        
+                    case .error(let error):
+                        self.isLoading = false
                         self.footerActivityIndicator.stopAnimating()
-                        self.refreshControl?.endRefreshing()
+                        
+                        guard error != .pageNotFound else { return }
+                        var snapshot = Snapshot()
+                        snapshot.appendSections([.wallets, .history])
+                        self.dataSource.applySnapshotUsingReloadData(snapshot) {
+                            self.refreshControl?.endRefreshing()
+                        }
+                    default:
+                        break
                     }
                 }
             }.store(in: &bindings)
@@ -122,11 +126,12 @@ final class MainViewController: UITableViewController {
         
     private func processLoadedData(_ wallets: [Wallet]?, _ histories: [History]?, page: Int?, _ error: DefinedError?) {
         var snapshot = self.dataSource.snapshot()
-        
-        self.footerActivityIndicator.stopAnimating()
-        self.backgroundActivityIndicator.stopAnimating()
-        
+                
         guard let page = page else { return }
+        
+        self.backgroundActivityIndicator.stopAnimating()
+        isLoading = false
+        self.footerActivityIndicator.stopAnimating()
         
         if page == 1 {
             snapshot = Snapshot()
@@ -174,13 +179,14 @@ extension MainViewController {
 
         let historiesCount = dataSource.snapshot().numberOfItems(inSection: .history)
 
-        if scrollView == tableView {
-            if (scrollView.contentOffset.y +
-                scrollView.frame.size.height) >= scrollView.contentSize.height {
-
-                viewModel.send(event: .onLoadNextPage(page: Int(historiesCount/20)))
-                footerActivityIndicator.startAnimating()
-            }
+        if scrollView.contentOffset.y < 0 {
+            return
+        } else if scrollView.contentOffset.y >= (scrollView.contentSize.height - view.bounds.size.height) &&
+                    isLoading == false &&
+                    viewModel.isPaginationAvailable {
+            isLoading = true
+            viewModel.send(event: .onLoadNextPage(page: Int(historiesCount/20)))
+            footerActivityIndicator.startAnimating()
         }
     }
         

@@ -20,11 +20,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         self.window = window
         
-        #if DEBUG
-            NetworkActivityLogger.shared.level = .debug
-            NetworkActivityLogger.shared.startLogging()
-        #endif
-        
         let appCoordinator = ApplicationCoordinator(window: window)
         appCoordinator.start()
     }

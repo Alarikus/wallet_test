@@ -20,7 +20,7 @@ final class MainViewModel {
     let viewModelProvider: ViewModelProvider
     
     @Published var isPaginationAvailable = false
-    @Published var requestsWithErrors: [Section] = []
+    @Published var requestsWithErrors: [Section]?
     var isRequestsWithDelayEnabled = false
     
     let dataProvider: WalletsDataProviderProtocol & HistoryDataProviderProtocol
@@ -52,13 +52,23 @@ final class MainViewModel {
             .sink { [weak self] state in
                 guard let self = self else { return }
                 
+                print("received state: \(String(describing: state))")
+                
                 switch state {
                 case .transition(let history):
                     self.coordinator.openHistoryDetail(history: history)
                     
-                case .loaded(_, let history, let page, _):
+                case .loaded(_, let history, let page, let error):
                     if let history = history, !history.isEmpty, page == 1 {
                         self.isPaginationAvailable = true
+                    }
+                    
+                    if let error = error {
+                        if error == .pageNotFound {
+                            self.isPaginationAvailable = false
+                        } else {
+                            self.coordinator.showAlert(title: "Error", message: error.message)
+                        }
                     }
                     
                 case .error(let error):
@@ -74,15 +84,28 @@ final class MainViewModel {
         
         $requestsWithErrors.receive(on: RunLoop.main)
             .sink { [weak self] selectedRequests in
-                guard let self = self else { return }
-                self.dataProvider.enableErrors(types: selectedRequests)
+                guard
+                    let self = self,
+                    let requestsWithErrors = selectedRequests
+                else { return }
+                
+                self.dataProvider.enableErrors(types: requestsWithErrors)
+                self.send(event: .onReload)
             }.store(in: &bindings)
     }
     
     func send(event: Event) {
+        print("send event: \(String(describing: event))")
+        
         input.send(event)
     }
     
+    var isLoading: Bool {
+        switch state {
+        case .loading: return true
+        default: return false
+        }
+    }
 }
 
 extension MainViewModel {
@@ -107,7 +130,6 @@ extension MainViewModel {
     
     enum Event {
         case onLoadView
-        case onAppear
         case onReload
         case onLoaded(Result<[Wallet], AFError>, Result<[History], AFError>, Int)
         case onLoadNextPage(page: Int)
@@ -136,10 +158,7 @@ extension MainViewModel {
         
         switch event {
         case .onLoadView, .onReload:
-            return isLoadingAvailable ? .loading(page: 1) : .loaded()
-            
-        case .onAppear:
-            return isLoadingAvailable ? .loaded() : state
+            return isLoadingAvailable ? .loading(page: 1) : .idle
             
         case .onLoaded(let wallets, let histories, let page):
             switch (wallets, histories) {
@@ -158,13 +177,13 @@ extension MainViewModel {
             }
             
         case .onLoadNextPage(let page):
-            return isLoadingAvailable ? .loading(page: page + 1) : .loaded()
+            return isLoadingAvailable ? .loading(page: page + 1) : .idle
             
         case .onFailedToLoadData(let error):
             
             return .error(DefinedError(from: error))
         case .onSelectHistory(let selectedHistory):
-            return isTransitionAvailable ? .transition(selectedHistory) : .loaded()
+            return isTransitionAvailable ? .transition(selectedHistory) : .idle
         }
     }
     
