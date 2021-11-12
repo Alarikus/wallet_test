@@ -99,10 +99,8 @@ final class MainCoordinator: Coordinator {
         
         if (mainViewController.viewModel.requestsWithErrors ?? []).isEmpty == false {
             item.tintColor = .systemRed
-//            self.showAlert(title: "Errors", message: "Enabled responses with error codes 429 and 500.")
         } else {
             item.tintColor = .label
-//            self.showAlert(title: "Errors", message: "Disabled reponses with error codes")
         }
     }
     

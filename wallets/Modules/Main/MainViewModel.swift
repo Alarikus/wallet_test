@@ -63,20 +63,10 @@ final class MainViewModel {
                         self.isPaginationAvailable = true
                     }
                     
-                    if let error = error {
-                        if error == .pageNotFound {
-                            self.isPaginationAvailable = false
-                        } else {
-                            self.coordinator.showAlert(title: "Error", message: error.message)
-                        }
-                    }
+                    self.handleError(error, page: page ?? 1)
                     
                 case .error(let error):
-                    if error == .pageNotFound {
-                        self.isPaginationAvailable = false
-                    } else {
-                        self.coordinator.showAlert(title: "Error", message: error.message)
-                    }
+                    self.handleError(error)
                 default:
                     break
                 }
@@ -100,12 +90,16 @@ final class MainViewModel {
         input.send(event)
     }
     
-    var isLoading: Bool {
-        switch state {
-        case .loading: return true
-        default: return false
+    private func handleError(_ error: DefinedError?, page: Int = 1) {
+        if let error = error {
+            if error == .pageNotFound {
+                self.isPaginationAvailable = false
+            } else if page == 1 {
+                self.coordinator.showAlert(title: "Error", message: error.message)
+            }
         }
     }
+    
 }
 
 extension MainViewModel {

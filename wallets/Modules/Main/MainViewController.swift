@@ -206,7 +206,9 @@ extension MainViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard section == 1, viewModel.isPaginationAvailable else { return nil }
+        guard (section == 1 && dataSource.snapshot().numberOfSections == 2) ||
+                (section == 0 && dataSource.snapshot().numberOfSections == 1),
+                viewModel.isPaginationAvailable else { return nil }
         let footerView = UIView(frame: .zero)
         footerView.backgroundColor = .clear
         
@@ -219,7 +221,9 @@ extension MainViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard section == 1 else { return super.tableView(tableView, heightForFooterInSection: section) }
+        guard (section == 1 && dataSource.snapshot().numberOfSections == 2) ||
+                (section == 0 && dataSource.snapshot().numberOfSections == 1),
+                viewModel.isPaginationAvailable else { return super.tableView(tableView, heightForFooterInSection: section) }
         
         return viewModel.isPaginationAvailable ? 70 : 0
     }
