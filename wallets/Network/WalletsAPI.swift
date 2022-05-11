@@ -30,8 +30,7 @@ extension APIRequest {
             components.path = "wallets"
         case .history(let page):
             components.parameters["page"] = page.string
-            components.parameters["offset"] = 20.string
-            components.path = "histories"
+            components.path = "history"
         }
             
         return components

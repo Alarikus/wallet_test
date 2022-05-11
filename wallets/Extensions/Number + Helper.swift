@@ -57,6 +57,7 @@ extension NSNumber {
     var formattedDecimal: String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = 20
         return numberFormatter.string(from: self) ?? String(describing: self)
     }
     

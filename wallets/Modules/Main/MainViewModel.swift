@@ -59,6 +59,7 @@ final class MainViewModel {
                     self.coordinator.openHistoryDetail(history: history)
                     
                 case .loaded(_, let history, let page, let error):
+                    
                     if let history = history, !history.isEmpty, page == 1 {
                         self.isPaginationAvailable = true
                     }

@@ -97,11 +97,15 @@ final class MainCoordinator: Coordinator {
                 
         navigationController.present(alert, animated: true)
         
-        if (mainViewController.viewModel.requestsWithErrors ?? []).isEmpty == false {
-            item.tintColor = .systemRed
-        } else {
-            item.tintColor = .label
-        }
+        mainViewController.viewModel.$requestsWithErrors
+            .receive(on: RunLoop.main)
+            .sink { requestsWithErrors in
+                if (requestsWithErrors ?? []).isEmpty == false {
+                    item.tintColor = .systemRed
+                } else {
+                    item.tintColor = .label
+                }
+            }.store(in: &bindings)
     }
     
 }

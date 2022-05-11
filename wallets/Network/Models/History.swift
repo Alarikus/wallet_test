@@ -20,6 +20,22 @@ struct History: Hashable, Codable {
         case incoming
         case outgoing
     }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if let amount = Double(try container.decode(String.self, forKey: .amount)) {
+            self.amount = amount
+        } else {
+            self.amount = try container.decode(Double.self, forKey: .amount)
+        }
+        
+        self.id = try container.decode(String.self, forKey: .id)
+        self.entry = try container.decode(Entry.self, forKey: .entry)
+        self.currency = try container.decode(String.self, forKey: .currency)
+        self.partner = try container.decode(String.self, forKey: .partner)
+        self.date = try container.decode(Date.self, forKey: .date)
+    }
+
 }
 
 struct HistoryResponse: Codable {

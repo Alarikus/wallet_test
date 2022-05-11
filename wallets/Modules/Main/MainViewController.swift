@@ -185,7 +185,7 @@ extension MainViewController {
                     isLoading == false &&
                     viewModel.isPaginationAvailable {
             isLoading = true
-            viewModel.send(event: .onLoadNextPage(page: Int(historiesCount/20)))
+            viewModel.send(event: .onLoadNextPage(page: Int(historiesCount/8)))
             footerActivityIndicator.startAnimating()
         }
     }

@@ -12,7 +12,7 @@ import Combine
 final class RemoteDataProvider: WalletsDataProviderProtocol, HistoryDataProviderProtocol {
     
     private
-    let host = "http://www.amock.io/api/aldammit/"
+    let host = "https://demo9797017.mockable.io/"
     
     private
     var enabledErrorsForTypes: [MainViewModel.Section] = []
